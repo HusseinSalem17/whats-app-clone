@@ -60,7 +60,10 @@ class LandingScreen extends StatelessWidget {
                 text: 'AGREE AND CONTINUE',
                 onTap: () => navigateToLoginScreen(context),
               ),
-            )
+            ),
+            const SizedBox(
+              height: 15,
+            ),
           ],
         ),
       )),

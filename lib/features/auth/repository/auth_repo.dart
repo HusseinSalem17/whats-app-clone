@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +66,23 @@ class AuthRepository {
       );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context: context, content: e.message!);
+    }
+  }
+
+  void saveUserDataToFirebase({
+    required String name,
+    required File? profilePic,
+    required ProviderRef ref,
+    required BuildContext context,
+  }) {
+    try {
+      String uid = auth.currentUser!.uid;
+      String photoUrl = 'assets/avatar.jpg';
+      if(profilePic!=null){
+        
+      }
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
     }
   }
 }
