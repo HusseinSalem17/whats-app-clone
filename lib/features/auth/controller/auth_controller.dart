@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:whatsapp_ui/core/utils/utils.dart';
 import 'package:whatsapp_ui/features/auth/repository/auth_repo.dart';
 
@@ -10,14 +11,19 @@ final authControllerProvider = Provider(
   (ref) {
     final authRepo = ref.watch(authRepositoryProvider);
     //provider.of<AuthRepo>(context);
-    return AuthController(authRepo: authRepo);
+    return AuthController(
+      authRepo: authRepo,
+      ref: ref,
+    );
   },
 );
 
 class AuthController {
   final AuthRepository authRepo;
+  final ProviderRef ref;
   AuthController({
     required this.authRepo,
+    required this.ref,
   });
 
   void signInWithPhone(BuildContext context, String phoneNumber) {
@@ -32,5 +38,16 @@ class AuthController {
     );
   }
 
-  
+  void saveUserDataToFirebase(
+    BuildContext context,
+    String name,
+    File? profilePic,
+  ) {
+    authRepo.saveUserDataToFirebase(
+      name: name,
+      profilePic: profilePic,
+      ref: ref,
+      context: context,
+    );
+  }
 }
