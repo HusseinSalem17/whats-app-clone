@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatsapp_ui/core/repository/common_firebase_storage_repository.dart';
 import 'package:whatsapp_ui/core/utils/utils.dart';
 import 'package:whatsapp_ui/features/auth/screens/otp_screen.dart';
 import 'package:whatsapp_ui/screens/user_information_screen.dart';
@@ -74,12 +75,17 @@ class AuthRepository {
     required File? profilePic,
     required ProviderRef ref,
     required BuildContext context,
-  }) {
+  }) async {
     try {
       String uid = auth.currentUser!.uid;
       String photoUrl = 'assets/avatar.jpg';
-      if(profilePic!=null){
-        
+      if (profilePic != null) {
+        photoUrl = await ref
+            .read(commonFirebaseStorageRepositoryProvider)
+            .storeFileToFirebase(
+              'profilePic/$uid',
+              profilePic,
+            );
       }
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
