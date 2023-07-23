@@ -4,8 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:whatsapp_ui/core/utils/utils.dart';
 import 'package:whatsapp_ui/features/auth/repository/auth_repo.dart';
+
+import '../../../models/user_model.dart';
 
 final authControllerProvider = Provider(
   (ref) {
@@ -18,6 +19,11 @@ final authControllerProvider = Provider(
   },
 );
 
+final userDataAuthProvider = FutureProvider((ref) {
+  final authController = ref.watch(authControllerProvider);
+  return authController.getUserData();
+});
+
 class AuthController {
   final AuthRepository authRepo;
   final ProviderRef ref;
@@ -25,6 +31,11 @@ class AuthController {
     required this.authRepo,
     required this.ref,
   });
+
+  Future<UserModel?> getUserData() async {
+    UserModel? user = await authRepo.getCurrentUserData();
+    return user;
+  }
 
   void signInWithPhone(BuildContext context, String phoneNumber) {
     authRepo.signInWithPhone(context: context, phoneNumber: phoneNumber);
