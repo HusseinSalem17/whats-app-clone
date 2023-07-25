@@ -5,6 +5,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_ui/core/utils/utils.dart';
 import 'package:whatsapp_ui/models/user_model.dart';
+import 'package:whatsapp_ui/screens/mobile_chat_screen.dart';
 
 final selectContactsRepositoryProvider = Provider(
   (ref) => SelectContactRepository(
@@ -36,7 +37,28 @@ class SelectContactRepository {
 
       for (var document in userCollection.docs) {
         var userData = UserModel.fromMap(document.data());
-        print(selectedContact.phones[0].number);
+        //replace all spaces with empty String +20 109 => +20109
+        String selectedPhoneNum = selectedContact.phones[0].number.replaceAll(
+          ' ',
+          '',
+        );
+        if (selectedPhoneNum == userData.phoneNumber) {
+          isFound = true;
+          Navigator.pushNamed(
+            context,
+            MobileChatScreen.routeName,
+            arguments: {
+              'name': userData.name,
+              'uid': userData.uid,
+            },
+          );
+        }
+      }
+      if (!isFound) {
+        showSnackBar(
+          context: context,
+          content: 'This number doesn\'t exist on this app.',
+        );
       }
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
