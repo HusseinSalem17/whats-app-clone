@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:whatsapp_ui/core/enums/message_enum.dart';
 import 'package:whatsapp_ui/core/utils/utils.dart';
+import 'package:whatsapp_ui/info.dart';
 import 'package:whatsapp_ui/models/chat_contact.dart';
 import 'package:whatsapp_ui/models/message.dart';
 
@@ -26,6 +27,33 @@ class ChatRepository {
     required this.auth,
   });
 
+  Stream<List<ChatContact>> getChatContacts() {
+    return firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('chats')
+        .snapshots()
+        .asyncMap((event) async {
+      List<ChatContact> contacts = [];
+      for (var document in event.docs) {
+        var chatContact = ChatContact.fromMap(document.data());
+        var userData = await firestore
+            .collection('users')
+            .doc(chatContact.contactId)
+            .get();
+        var user = UserModel.fromMap(userData.data()!);
+        contacts.add(ChatContact(
+          name: user.name,
+          profilePic: user.profilePic,
+          contactId: chatContact.contactId,
+          timeSent: chatContact.timeSent,
+          lastMessage: chatContact.lastMessage,
+        ));
+      }
+      return contacts;
+    });
+  }
+
   void _saveDataToContactSubcollection(
     UserModel senderUserData,
     UserModel recieverUserData,
@@ -39,7 +67,7 @@ class ChatRepository {
       profilePic: senderUserData.profilePic,
       contactId: senderUserData.uid,
       timeSent: timeSent,
-      lastMEssage: text,
+      lastMessage: text,
     );
     await firestore
         .collection('users')
@@ -57,7 +85,7 @@ class ChatRepository {
       profilePic: recieverUserData.profilePic,
       contactId: recieverUserData.uid,
       timeSent: timeSent,
-      lastMEssage: text,
+      lastMessage: text,
     );
     await firestore
         .collection('users')

@@ -5,8 +5,10 @@ import 'package:whatsapp_ui/features/chat/controller/chat_controller.dart';
 import '../../../colors.dart';
 
 class BottomChatField extends ConsumerStatefulWidget {
+  final String recieverUserId;
   const BottomChatField({
     super.key,
+    required this.recieverUserId,
   });
 
   @override
@@ -15,11 +17,25 @@ class BottomChatField extends ConsumerStatefulWidget {
 
 class _BottomChatFieldState extends ConsumerState<BottomChatField> {
   bool isShowSendButton = false;
+  final TextEditingController _messageController = TextEditingController();
 
   void sendTextMessage() async {
     if (isShowSendButton) {
-      ref.read(chatControllerProvider);
+      ref.read(chatControllerProvider).sendTextMessage(
+            context,
+            _messageController.text.trim(),
+            widget.recieverUserId,
+          );
+      setState(() {
+        _messageController.text = '';
+      });
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _messageController.dispose();
   }
 
   @override
@@ -29,6 +45,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
         //to take max available space for TextField
         Expanded(
           child: TextFormField(
+            controller: _messageController,
             onChanged: (val) {
               if (val.isNotEmpty) {
                 setState(() {
@@ -100,9 +117,12 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
           child: CircleAvatar(
             backgroundColor: const Color(0xff128C7E),
             radius: 25,
-            child: Icon(
-              isShowSendButton ? Icons.send : Icons.mic,
-              color: Colors.white,
+            child: GestureDetector(
+              child: Icon(
+                isShowSendButton ? Icons.send : Icons.mic,
+                color: Colors.white,
+              ),
+              onTap: sendTextMessage,
             ),
           ),
         )
