@@ -5,7 +5,8 @@ import 'package:whatsapp_ui/colors.dart';
 import 'package:whatsapp_ui/features/chat/controller/chat_controller.dart';
 import 'package:whatsapp_ui/features/chat/screens/mobile_chat_screen.dart';
 
-import '../models/chat_contact.dart';
+import '../../../core/widgets/loader.dart';
+import '../../../models/chat_contact.dart';
 
 class ContactsList extends ConsumerWidget {
   const ContactsList({Key? key}) : super(key: key);
@@ -17,6 +18,9 @@ class ContactsList extends ConsumerWidget {
       child: StreamBuilder<List<ChatContact>>(
           stream: ref.watch(chatControllerProvider).chatContacts(),
           builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Loader();
+            }
             return ListView.builder(
               shrinkWrap: true,
               itemCount: snapshot.data!.length,
@@ -26,13 +30,13 @@ class ContactsList extends ConsumerWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const MobileChatScreen(
-                              name: 'HH',
-                              uid: '12345',
-                            ),
-                          ),
+                        Navigator.pushNamed(
+                          context,
+                          MobileChatScreen.routeName,
+                          arguments: {
+                            'name': chatContactData.name,
+                            'uid': chatContactData.contactId
+                          },
                         );
                       },
                       child: Padding(

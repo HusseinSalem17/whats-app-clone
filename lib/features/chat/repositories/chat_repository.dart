@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:whatsapp_ui/core/enums/message_enum.dart';
 import 'package:whatsapp_ui/core/utils/utils.dart';
-import 'package:whatsapp_ui/info.dart';
 import 'package:whatsapp_ui/models/chat_contact.dart';
 import 'package:whatsapp_ui/models/message.dart';
 

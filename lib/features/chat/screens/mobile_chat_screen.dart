@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_ui/colors.dart';
 import 'package:whatsapp_ui/core/widgets/loader.dart';
 import 'package:whatsapp_ui/features/auth/controller/auth_controller.dart';
-import 'package:whatsapp_ui/widgets/chat_list.dart';
+import 'package:whatsapp_ui/features/chat/widgets/chat_list.dart';
 
 import '../../../models/user_model.dart';
 import '../widgets/bottom_chat_field.dart';
