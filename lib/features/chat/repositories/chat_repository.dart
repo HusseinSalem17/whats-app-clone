@@ -1,10 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:whatsapp_ui/core/enums/message_enum.dart';
+import 'package:whatsapp_ui/core/repository/common_firebase_storage_repository.dart';
 import 'package:whatsapp_ui/core/utils/utils.dart';
 import 'package:whatsapp_ui/models/chat_contact.dart';
 import 'package:whatsapp_ui/models/message.dart';
@@ -207,6 +210,26 @@ class ChatRepository {
         recieverUserName: recieverUserData.name,
         userName: senderUser.name,
       );
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
+
+  void sednFileMessage({
+    required BuildContext context,
+    required File file,
+    required String recieverUserId,
+    required UserModel senderUserData,
+    required ProviderRef ref,
+    required MessageEnum messageEnum,
+  }) async {
+    try {
+      var timeSent = DateTime.now();
+      var messageId = const Uuid().v1();
+
+      await ref.read(commonFirebaseStorageRepositoryProvider).storeFileToFirebase(
+          'chat/${messageEnum.type}/${senderUserData.uid}/$recieverUserId/$messageId',
+          file);
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }
