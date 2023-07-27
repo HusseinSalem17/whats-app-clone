@@ -75,6 +75,10 @@ class ChatController {
     String gifUrl,
     String recieverUserId,
   ) {
+    //get lst string after - (index 1)
+    int gifUrlPartIndex = gifUrl.lastIndexOf('-') + 1;
+    String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
+    String newGifUrl = 'https://i.giphy.com/media/$gifUrlPart/200.gif';
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.senGIFMessage(
             context: context,
