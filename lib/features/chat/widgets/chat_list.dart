@@ -4,11 +4,11 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:whatsapp_ui/features/chat/controller/chat_controller.dart';
-import 'package:whatsapp_ui/widgets/my_message_card.dart';
-import 'package:whatsapp_ui/widgets/sender_message_card.dart';
+import 'package:whatsapp_ui/features/chat/widgets/sender_message_card.dart';
 
 import '../../../core/widgets/loader.dart';
 import '../../../models/message.dart';
+import 'my_message_card.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String recieverUserId;

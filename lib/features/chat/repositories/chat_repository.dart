@@ -80,7 +80,7 @@ class ChatRepository {
     });
   }
 
-  void _saveDataToContactSubcollection(
+  void _saveDataToContactsSubcollection(
     UserModel senderUserData,
     UserModel recieverUserData,
     String text,
@@ -193,7 +193,7 @@ class ChatRepository {
       var messageId = const Uuid().v1();
       //users -> reciever userId  -> chats -> current user id -> set data
 
-      _saveDataToContactSubcollection(
+      _saveDataToContactsSubcollection(
         senderUser,
         recieverUserData,
         text,
@@ -227,9 +227,49 @@ class ChatRepository {
       var timeSent = DateTime.now();
       var messageId = const Uuid().v1();
 
-      await ref.read(commonFirebaseStorageRepositoryProvider).storeFileToFirebase(
-          'chat/${messageEnum.type}/${senderUserData.uid}/$recieverUserId/$messageId',
-          file);
+      String imageUrl = await ref
+          .read(commonFirebaseStorageRepositoryProvider)
+          .storeFileToFirebase(
+              'chat/${messageEnum.type}/${senderUserData.uid}/$recieverUserId/$messageId',
+              file);
+
+      var userDataMap =
+          await firestore.collection('users').doc(recieverUserId).get();
+      UserModel recieverUserData = UserModel.fromMap(userDataMap.data()!);
+      String contactMsg;
+      switch (messageEnum) {
+        case MessageEnum.image:
+          contactMsg = '📷 Photo';
+          break;
+        case MessageEnum.video:
+          contactMsg = '📸 Video';
+          break;
+        case MessageEnum.audio:
+          contactMsg = '🔉 Audio';
+          break;
+        case MessageEnum.gif:
+          contactMsg = 'GIF';
+          break;
+        default:
+          contactMsg = 'GIF';
+      }
+      _saveDataToContactsSubcollection(
+        senderUserData,
+        recieverUserData,
+        contactMsg,
+        timeSent,
+        recieverUserId,
+      );
+
+      _saveMessageToMessageSubcollection(
+        reciecverUserId: recieverUserId,
+        text: imageUrl,
+        timeSent: timeSent,
+        messageId: messageId,
+        userName: senderUserData.name,
+        recieverUserName: recieverUserData.name,
+        messageType: messageEnum,
+      );
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }
