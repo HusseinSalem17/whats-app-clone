@@ -82,7 +82,7 @@ class ChatController {
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.senGIFMessage(
             context: context,
-            gifUrl: gifUrl,
+            gifUrl: newGifUrl,
             recieverUserId: recieverUserId,
             senderUser: value!,
           ),
