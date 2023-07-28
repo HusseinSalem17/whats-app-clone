@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatsapp_ui/core/providers/message_reply_provider.dart';
 import 'package:whatsapp_ui/features/auth/controller/auth_controller.dart';
 
 import 'package:whatsapp_ui/features/chat/repositories/chat_repository.dart';
@@ -42,14 +43,17 @@ class ChatController {
     String text,
     String recieverUserId,
   ) {
+    final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendTextMessage(
             context: context,
             text: text,
             recieverUserId: recieverUserId,
             senderUser: value!,
+            messageReply: messageReply,
           ),
         );
+    ref.read(messageReplyProvider.notifier).update((state) => null);
   }
 
   void sendFileMessage(
@@ -58,16 +62,20 @@ class ChatController {
     String recieverUserId,
     MessageEnum messageEnum,
   ) {
+    final messageReply = ref.read(messageReplyProvider);
+
     ref.read(userDataAuthProvider).whenData(
-          (value) => chatRepository.sednFileMessage(
+          (value) => chatRepository.sendFileMessage(
             context: context,
             file: file,
             recieverUserId: recieverUserId,
             senderUserData: value!,
             messageEnum: messageEnum,
             ref: ref,
+            messageReply: messageReply,
           ),
         );
+    ref.read(messageReplyProvider.notifier).update((state) => null);
   }
 
   void sendGIFMessage(
@@ -75,7 +83,9 @@ class ChatController {
     String gifUrl,
     String recieverUserId,
   ) {
-    //get lst string after - (index 1)
+    final messageReply = ref.read(messageReplyProvider);
+
+    //get last string after - (index 1)
     int gifUrlPartIndex = gifUrl.lastIndexOf('-') + 1;
     String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
     String newGifUrl = 'https://i.giphy.com/media/$gifUrlPart/200.gif';
@@ -85,7 +95,21 @@ class ChatController {
             gifUrl: newGifUrl,
             recieverUserId: recieverUserId,
             senderUser: value!,
+            messageReply: messageReply,
           ),
         );
+    ref.read(messageReplyProvider.notifier).update((state) => null);
+  }
+
+  void setChatMessageSee({
+    required BuildContext context,
+    required String recieverUserId,
+    required String messageId,
+  }) {
+    chatRepository.setChatMessageSeen(
+      context: context,
+      recieverUserId: recieverUserId,
+      messageId: messageId,
+    );
   }
 }
