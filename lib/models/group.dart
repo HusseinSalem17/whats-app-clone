@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Group {
   final String senderId;
   final String name;
@@ -8,6 +5,7 @@ class Group {
   final String lastMessage;
   final String groupPic;
   final List<String> membersUid;
+  final DateTime timeSent;
   Group({
     required this.senderId,
     required this.name,
@@ -15,6 +13,7 @@ class Group {
     required this.lastMessage,
     required this.groupPic,
     required this.membersUid,
+    required this.timeSent,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,6 +24,7 @@ class Group {
       'lastMessage': lastMessage,
       'groupPic': groupPic,
       'membersUid': membersUid,
+      'timeSent': timeSent.millisecondsSinceEpoch,
     };
   }
 
@@ -38,6 +38,7 @@ class Group {
       membersUid: List<String>.from(
         (map['membersUid'] as List<String>),
       ),
+      timeSent: DateTime.fromMillisecondsSinceEpoch(map['timeSent'] as int),
     );
   }
 }

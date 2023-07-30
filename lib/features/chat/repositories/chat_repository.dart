@@ -11,6 +11,7 @@ import 'package:whatsapp_ui/core/providers/message_reply_provider.dart';
 import 'package:whatsapp_ui/core/repository/common_firebase_storage_repository.dart';
 import 'package:whatsapp_ui/core/utils/utils.dart';
 import 'package:whatsapp_ui/models/chat_contact.dart';
+import 'package:whatsapp_ui/models/group.dart';
 import 'package:whatsapp_ui/models/message.dart';
 
 import '../../../models/user_model.dart';
@@ -54,6 +55,19 @@ class ChatRepository {
         ));
       }
       return contacts;
+    });
+  }
+
+  Stream<List<Group>> getChatGroups() {
+    return firestore.collection('groups').snapshots().map((event) {
+      List<Group> groups = [];
+      for (var document in event.docs) {
+        var group = Group.fromMap(document.data());
+        if (group.membersUid.contains(auth.currentUser!.uid)) {
+          groups.add(group);
+        }
+      }
+      return groups;
     });
   }
 
