@@ -39,7 +39,8 @@ class ContactsList extends ConsumerWidget {
                                 MobileChatScreen.routeName,
                                 arguments: {
                                   'name': groupData.name,
-                                  'uid': groupData.groupId
+                                  'uid': groupData.groupId,
+                                  'isGroupChat': true,
                                 },
                               );
                             },
@@ -66,8 +67,7 @@ class ContactsList extends ConsumerWidget {
                                   radius: 30,
                                 ),
                                 trailing: Text(
-                                  DateFormat.Hm()
-                                      .format(groupData.timeSent),
+                                  DateFormat.Hm().format(groupData.timeSent),
                                   style: const TextStyle(
                                     color: Colors.grey,
                                     fontSize: 13,
@@ -102,7 +102,8 @@ class ContactsList extends ConsumerWidget {
                                 MobileChatScreen.routeName,
                                 arguments: {
                                   'name': chatContactData.name,
-                                  'uid': chatContactData.contactId
+                                  'uid': chatContactData.contactId,
+                                  'isGroupChat': false,
                                 },
                               );
                             },

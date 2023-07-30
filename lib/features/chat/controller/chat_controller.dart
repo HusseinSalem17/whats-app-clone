@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -34,17 +33,24 @@ class ChatController {
   Stream<List<ChatContact>> chatContacts() {
     return chatRepository.getChatContacts();
   }
-Stream<List<Group>> chatGroups() {
+
+  Stream<List<Group>> chatGroups() {
     return chatRepository.getChatGroups();
   }
+
   Stream<List<Message>> chatStream(String receiverUserId) {
     return chatRepository.getChatStream(receiverUserId);
+  }
+
+  Stream<List<Message>> groupChatStream(String groupId) {
+    return chatRepository.getGroupChatStream(groupId);
   }
 
   void sendTextMessage(
     BuildContext context,
     String text,
     String recieverUserId,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
@@ -54,6 +60,7 @@ Stream<List<Group>> chatGroups() {
             recieverUserId: recieverUserId,
             senderUser: value!,
             messageReply: messageReply,
+            isGroupChat: isGroupChat,
           ),
         );
     ref.read(messageReplyProvider.notifier).update((state) => null);
@@ -64,6 +71,7 @@ Stream<List<Group>> chatGroups() {
     File file,
     String recieverUserId,
     MessageEnum messageEnum,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
 
@@ -76,6 +84,7 @@ Stream<List<Group>> chatGroups() {
             messageEnum: messageEnum,
             ref: ref,
             messageReply: messageReply,
+            isGroupChat: isGroupChat,
           ),
         );
     ref.read(messageReplyProvider.notifier).update((state) => null);
@@ -85,6 +94,7 @@ Stream<List<Group>> chatGroups() {
     BuildContext context,
     String gifUrl,
     String recieverUserId,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
 
@@ -99,12 +109,13 @@ Stream<List<Group>> chatGroups() {
             recieverUserId: recieverUserId,
             senderUser: value!,
             messageReply: messageReply,
+            isGroupChat: isGroupChat,
           ),
         );
     ref.read(messageReplyProvider.notifier).update((state) => null);
   }
 
-  void setChatMessageSee({
+  void setChatMessageSeen({
     required BuildContext context,
     required String recieverUserId,
     required String messageId,
