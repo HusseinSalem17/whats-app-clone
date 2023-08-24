@@ -8,8 +8,8 @@ import 'package:whatsapp_ui/core/repository/common_firebase_storage_repository.d
 import 'package:whatsapp_ui/core/utils/utils.dart';
 import 'package:whatsapp_ui/features/auth/screens/otp_screen.dart';
 import 'package:whatsapp_ui/models/user_model.dart';
-import 'package:whatsapp_ui/screens/mobile_layout_screen.dart';
-import 'package:whatsapp_ui/screens/user_information_screen.dart';
+import '../../../mobile_layout_screen.dart';
+import '../screens/user_information_screen.dart';
 
 final authRepositoryProvider = Provider(
   (ref) => AuthRepository(

@@ -14,7 +14,7 @@ class SelectContactsScreen extends ConsumerWidget {
       WidgetRef ref, Contact selectedContact, BuildContext context) {
     ref
         .read(selectContactControllerProvider)
-        .selectContact(selectedContact, BuildContext, context);
+        .selectContact(selectedContact, context);
   }
 
   @override
@@ -38,10 +38,10 @@ class SelectContactsScreen extends ConsumerWidget {
           ],
         ),
         body: ref.watch(getContactsProvider).when(
-            data: (ContactsList) => ListView.builder(
-                  itemCount: ContactsList.length,
+            data: (contactlist) => ListView.builder(
+                  itemCount: contactlist.length,
                   itemBuilder: (context, index) {
-                    final contact = ContactsList[index];
+                    final contact = contactlist[index];
                     return InkWell(
                       onTap: () => selectContact(ref, contact, context),
                       child: Padding(

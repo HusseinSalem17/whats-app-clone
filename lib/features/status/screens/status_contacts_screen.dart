@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_ui/features/status/controller/status_controller.dart';
 import 'package:whatsapp_ui/features/status/screens/status_screen.dart';
 
-import '../../../colors.dart';
+import '../../../core/utils/colors.dart';
 import '../../../core/widgets/loader.dart';
 import '../../../models/status_model.dart';
 

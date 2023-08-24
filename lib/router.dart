@@ -8,8 +8,7 @@ import 'package:whatsapp_ui/features/group/screens/create_group_screen.dart';
 import 'package:whatsapp_ui/features/select_contacts/screens/select_contacts_screen.dart';
 import 'package:whatsapp_ui/features/chat/screens/mobile_chat_screen.dart';
 import 'package:whatsapp_ui/features/status/screens/status_screen.dart';
-import 'package:whatsapp_ui/screens/user_information_screen.dart';
-
+import 'features/auth/screens/user_information_screen.dart';
 import 'features/status/screens/confirm_status_screen.dart';
 import 'models/status_model.dart';
 
@@ -37,11 +36,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       final name = arguments['name'];
       final uid = arguments['uid'];
       final isGroupChat = arguments['isGroupChat'];
+      final profilePic = arguments['profilePic'];
       return MaterialPageRoute(
         builder: (context) => MobileChatScreen(
           name: name,
           uid: uid,
           isGroupChat: isGroupChat,
+          profilePic: profilePic,
         ),
       );
     case ConfirmStatusScreen.routeName:

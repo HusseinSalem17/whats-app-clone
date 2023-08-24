@@ -1,15 +1,15 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whatsapp_ui/colors.dart';
-import 'package:whatsapp_ui/core/utils/utils.dart';
 import 'package:whatsapp_ui/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_ui/features/group/screens/create_group_screen.dart';
 import 'package:whatsapp_ui/features/select_contacts/screens/select_contacts_screen.dart';
 import 'package:whatsapp_ui/features/chat/widgets/contacts_list.dart';
 import 'package:whatsapp_ui/features/status/screens/confirm_status_screen.dart';
 import 'package:whatsapp_ui/features/status/screens/status_contacts_screen.dart';
+
+import 'core/utils/colors.dart';
+import 'core/utils/utils.dart';
 
 class MobileLayoutScreen extends ConsumerStatefulWidget {
   const MobileLayoutScreen({Key? key}) : super(key: key);
@@ -25,7 +25,6 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
   void initState() {
     super.initState();
     tabBarController = TabController(length: 3, vsync: this);
-    //observe for overrides function for WidgetsBindingObserver
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -77,7 +76,6 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
                 Icons.more_vert,
                 color: Colors.grey,
               ),
-              color: Colors.grey,
               itemBuilder: (context) => [
                 PopupMenuItem(
                   child: const Text(
@@ -87,9 +85,9 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
                     () => Navigator.pushNamed(
                         context, CreateGroupScreen.routeName),
                   ),
-                ),
+                )
               ],
-            )
+            ),
           ],
           bottom: TabBar(
             controller: tabBarController,
@@ -113,11 +111,12 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
             ],
           ),
         ),
-        body: const TabBarView(
-          children: [
+        body: TabBarView(
+          controller: tabBarController,
+          children: const [
             ContactsList(),
             StatusContactsScreen(),
-            Text('Calls'),
+            Text('Calls')
           ],
         ),
         floatingActionButton: FloatingActionButton(

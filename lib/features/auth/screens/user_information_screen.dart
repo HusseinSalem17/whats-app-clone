@@ -1,13 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:whatsapp_ui/core/utils/utils.dart';
 import 'package:whatsapp_ui/features/auth/controller/auth_controller.dart';
+
+import '../../../core/utils/utils.dart';
 
 class UserInformationScreen extends ConsumerStatefulWidget {
   static const String routeName = '/user-information';
-  const UserInformationScreen({super.key});
+  const UserInformationScreen({Key? key}) : super(key: key);
 
   @override
   ConsumerState<UserInformationScreen> createState() =>
@@ -17,6 +17,7 @@ class UserInformationScreen extends ConsumerStatefulWidget {
 class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
   final TextEditingController nameController = TextEditingController();
   File? image;
+
   @override
   void dispose() {
     super.dispose();
@@ -43,6 +44,7 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -52,11 +54,15 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
                 children: [
                   image == null
                       ? const CircleAvatar(
-                          backgroundImage: AssetImage('assets/avatar.jpg'),
+                          backgroundImage: NetworkImage(
+                            'https://png.pngitem.com/pimgs/s/649-6490124_katie-notopoulos-katienotopoulos-i-write-about-tech-round.png',
+                          ),
                           radius: 64,
                         )
                       : CircleAvatar(
-                          backgroundImage: FileImage(image!),
+                          backgroundImage: FileImage(
+                            image!,
+                          ),
                           radius: 64,
                         ),
                   Positioned(
@@ -75,11 +81,12 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
                 children: [
                   Container(
                     width: size.width * 0.85,
-                    padding: const EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(20),
                     child: TextField(
                       controller: nameController,
-                      decoration:
-                          const InputDecoration(hintText: 'Enter your name'),
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your name',
+                      ),
                     ),
                   ),
                   IconButton(
@@ -87,7 +94,7 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
                     icon: const Icon(
                       Icons.done,
                     ),
-                  )
+                  ),
                 ],
               ),
             ],

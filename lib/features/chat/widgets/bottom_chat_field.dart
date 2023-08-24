@@ -11,7 +11,7 @@ import 'package:whatsapp_ui/core/utils/utils.dart';
 import 'package:whatsapp_ui/features/chat/controller/chat_controller.dart';
 import 'package:whatsapp_ui/features/chat/widgets/message_reply_preview.dart';
 
-import '../../../colors.dart';
+import '../../../core/utils/colors.dart';
 import '../../../core/enums/message_enum.dart';
 
 class BottomChatField extends ConsumerStatefulWidget {
